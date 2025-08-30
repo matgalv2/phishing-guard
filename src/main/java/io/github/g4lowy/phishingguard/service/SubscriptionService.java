@@ -12,12 +12,10 @@ import java.util.Optional;
 @Service
 public class SubscriptionService {
 
-    private final
-
     public Mono<SubscriptionResponseDto> handleSMS(SmsDto smsDto){
 
 
-
+        return null;
     }
 
     private static Optional<SubscriptionStatus> findStatusByName(String name) {
