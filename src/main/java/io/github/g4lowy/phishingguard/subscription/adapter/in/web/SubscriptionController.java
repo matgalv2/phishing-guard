@@ -1,12 +1,11 @@
-package io.github.g4lowy.phishingguard.subscription.controller;
+package io.github.g4lowy.phishingguard.subscription.adapter.in.web;
 
 
 import io.github.g4lowy.phishingguard.ServiceStatus;
-import io.github.g4lowy.phishingguard.dto.SmsDto;
-import io.github.g4lowy.phishingguard.subscription.service.SubscriptionService;
+import io.github.g4lowy.phishingguard.common.dto.SmsDto;
+import io.github.g4lowy.phishingguard.subscription.application.port.in.SubscriptionManagementSmsUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,12 +17,11 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/subscription")
 public class SubscriptionController {
 
-    private final SubscriptionService subscriptionService;
+    private final SubscriptionManagementSmsUseCase subscriptionManagementSmsUseCase;
 
     @PostMapping
-    private ResponseEntity<Mono<ServiceStatus>> handleSms(@Valid @RequestBody SmsDto smsDto){
+    private Mono<ServiceStatus> handleSubscriptionRequest(@Valid @RequestBody SmsDto smsDto){
 
-        return ResponseEntity.ok(subscriptionService.handleSms(smsDto));
+        return subscriptionManagementSmsUseCase.handleSubscriptionSms(smsDto);
     }
-
 }
