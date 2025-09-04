@@ -8,5 +8,5 @@ public record SmsDto(@Pattern(regexp = "\\d{9}", message = PHONE_NUMBER_VALIDATI
                      @NotBlank(message = MESSAGE_VALIDATION_MESSAGE) String message) {
 
     private static final String PHONE_NUMBER_VALIDATION_MESSAGE = "Phone number should consists of 9 numbers";
-    private static final String MESSAGE_VALIDATION_MESSAGE = "Phone number should consists of 9 numbers";
+    private static final String MESSAGE_VALIDATION_MESSAGE = "Message should not be blank";
 }
