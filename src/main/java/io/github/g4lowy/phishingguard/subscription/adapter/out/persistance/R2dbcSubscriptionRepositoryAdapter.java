@@ -1,8 +1,9 @@
-package io.github.g4lowy.phishingguard.subscription.infrastructure.repository;
+package io.github.g4lowy.phishingguard.subscription.adapter.out.persistance;
 
 
+import io.github.g4lowy.phishingguard.subscription.adapter.out.persistance.model.SubscriptionEntity;
 import io.github.g4lowy.phishingguard.subscription.domain.Subscription;
-import io.github.g4lowy.phishingguard.subscription.domain.SubscriptionRepository;
+import io.github.g4lowy.phishingguard.subscription.application.port.out.persistance.SubscriptionRepository;
 import io.github.g4lowy.phishingguard.subscription.domain.SubscriptionStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -10,7 +11,7 @@ import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
 @Repository
-public class ReactiveSubscriptionRepository implements SubscriptionRepository {
+public class R2dbcSubscriptionRepositoryAdapter implements SubscriptionRepository {
 
     private final R2dbcSubscriptionRepository subscriptionRepository;
 
@@ -20,19 +21,13 @@ public class ReactiveSubscriptionRepository implements SubscriptionRepository {
 
     public Mono<SubscriptionStatus> getStatus(String msisdn) {
         return subscriptionRepository.findById(msisdn)
-                .map(Subscription::getStatus)
+                .map(SubscriptionEntity::getStatus)
                 .defaultIfEmpty(SubscriptionStatus.INACTIVE);
     }
 
     @Override
     public Mono<Void> upsert(Subscription subscription) {
-        return subscriptionRepository.findById(subscription.getMsisdn())
-                .flatMap(existing -> {
 
-                    existing.setStatus(subscription.getStatus());
-                    return subscriptionRepository.save(existing);
-                })
-                .switchIfEmpty(subscriptionRepository.save(subscription))
-                .then();
+        return subscriptionRepository.upsert(subscription);
     }
 }
