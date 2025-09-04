@@ -3,7 +3,6 @@ package io.github.g4lowy.phishingguard.subscription.adapter.out.persistance.mode
 
 import io.github.g4lowy.phishingguard.subscription.domain.SubscriptionStatus;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
