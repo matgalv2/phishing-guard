@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
 public final class UrlUtils {
 
     private UrlUtils() {}
@@ -24,35 +26,38 @@ public final class UrlUtils {
     );
 
     public static List<String> extractUrls(String text) {
-
         List<String> urls = new ArrayList<>();
         Matcher matcher = URL_PATTERN.matcher(text);
-
         while (matcher.find()) {
             urls.add(matcher.group());
         }
-
         return urls;
     }
 
     public static String normalize(String raw) {
-
         String input = raw.trim();
 
-        if (!input.startsWith("http")) {
-
+        if (!input.toLowerCase().startsWith("http")) {
             input = "http://" + input;
         }
 
-        return new URLNormalizer(input)
+        String normalized = new URLNormalizer(input)
                 .lowerCaseSchemeHost()
                 .removeDefaultPort()
                 .removeFragment()
                 .toString();
+
+        try {
+            URI uri = new URI(normalized);
+            if (isEmpty(uri.getPath()) && !normalized.endsWith("/")) {
+                normalized = normalized + "/";
+            }
+        } catch (URISyntaxException ignored) {}
+
+        return normalized;
     }
 
     public static String hostOf(String url) {
-
         try {
             return new URI(url).getHost();
         } catch (URISyntaxException uriSyntaxException) {
@@ -61,9 +66,15 @@ public final class UrlUtils {
     }
 
     public static String eTldPlusOne(String host) {
+        try {
 
-        return InternetDomainName.from(host)
-                .topPrivateDomain()
-                .toString();
+            return InternetDomainName.from(host)
+                    .topPrivateDomain()
+                    .toString();
+
+        } catch (IllegalStateException e) {
+
+            throw new IllegalArgumentException("Invalid domain: " + host, e);
+        }
     }
 }
