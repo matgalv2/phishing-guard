@@ -1,6 +1,6 @@
 package io.github.g4lowy.phishingguard.subscription.application.service;
 
-import io.github.g4lowy.phishingguard.ServiceStatus;
+import io.github.g4lowy.phishingguard.subscription.application.dto.ServiceStatusDto;
 import io.github.g4lowy.phishingguard.common.dto.SmsDto;
 import io.github.g4lowy.phishingguard.subscription.application.port.in.SubscriptionManagementSmsUseCase;
 import io.github.g4lowy.phishingguard.subscription.application.port.out.persistance.SubscriptionRepository;
@@ -31,7 +31,7 @@ public class SubscriptionService implements SubscriptionManagementSmsUseCase {
         this.wrongCodeMessage = wrongCodeMessage;
     }
 
-    public Mono<ServiceStatus> handleSubscriptionSms(SmsDto smsDto) {
+    public Mono<ServiceStatusDto> handleSubscriptionSms(SmsDto smsDto) {
         return SubscriptionStatus.findStatusByKeyword(smsDto.message())
                 .map(subscriptionStatus ->
                         subscriptionRepository
@@ -39,6 +39,6 @@ public class SubscriptionService implements SubscriptionManagementSmsUseCase {
                                 .then(Mono.fromCallable(() -> subscriptionStatus == SubscriptionStatus.ACTIVE ? activationMessage : deactivationMessage))
                 )
                 .orElse(Mono.just(wrongCodeMessage))
-                .map(ServiceStatus::new);
+                .map(ServiceStatusDto::new);
     }
 }
