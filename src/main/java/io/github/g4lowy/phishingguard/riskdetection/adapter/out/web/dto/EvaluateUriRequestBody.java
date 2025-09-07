@@ -1,6 +1,7 @@
 package io.github.g4lowy.phishingguard.riskdetection.adapter.out.web.dto;
 
-public record EvaluateUriRequestBody(String uri) {
+import java.util.List;
 
-    // TODO: add threatType
+public record EvaluateUriRequestBody(String uri, List<ThreatType> threatTypes, boolean allowScan) {
+
 }
