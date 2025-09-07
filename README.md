@@ -7,6 +7,15 @@ Wykorzystane technologie:
 * Redis
 * PostgreSQL (sterowniki R2DBC)
 
+## Uruchamianie
+Najszybszym sposobem uruchomienia aplikacji jest wykorzystanie [docker-compose](docker-compose.yml). Należy pamiętaż, że trzeba dodać plik .env z następującymi zmiennymi:
+* DATABASE_URL=postgresql://postgres:5432/phish
+* DATABASE_USERNAME=phish
+* DATABASE_PASSWORD=phish
+* CACHE_HOST=redis
+* CACHE_PORT=6379
+* GOOGLE_WEBRISK_TOKEN=token
+
 ## Architektura
 * Modularny monolit - jedna aplikacja podzielona na moduły (subscription i riskdetection).
 * Heksagon - wykorzystanie portów i adapterów.
@@ -39,3 +48,4 @@ Wykorzystane technologie:
 * zmiana odpowiedzi /subscription w przypadku błędnego kodu na 400
 * regex do urli nie działa w pełni poprawnie - wysypuje się na polskich znakach
 * zmiana nazw serwisów na bardziej intuicyjne: RiskDetectionService i UrlEvaluateService
+* przenisienie sekretów do docker secrets/vault
