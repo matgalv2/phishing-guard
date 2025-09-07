@@ -1,8 +1,8 @@
 package io.github.g4lowy.phishingguard.riskdetection.adapter.out.cache;
 
 
-import io.github.g4lowy.phishingguard.riskdetection.domain.model.Risk;
 import io.github.g4lowy.phishingguard.riskdetection.application.port.out.CachePort;
+import io.github.g4lowy.phishingguard.riskdetection.domain.model.Risk;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,7 @@ import java.time.Duration;
 
 @Component
 @RequiredArgsConstructor
-public class RedisCacheAdapter implements CachePort {
+class RedisCacheAdapter implements CachePort {
 
     private final ReactiveStringRedisTemplate redisTemplate;
 
@@ -33,17 +33,27 @@ public class RedisCacheAdapter implements CachePort {
     }
 
     @Override
-    public Mono<Void> putUrl(String key, Risk risk, long timeToLive) {
+    public Mono<Void> putUrl(String key, Risk risk) {
 
         return redisTemplate.opsForValue()
-                .set("risk:url:" + key, risk.name(), Duration.ofSeconds(timeToLive))
+                .set("risk:url:" + key, risk.name(), Duration.ofSeconds(cacheTimeToLive(risk)))
                 .then();
     }
+
     @Override
-    public Mono<Void> putETldPlusOne(String e2ld, Risk risk, long timeToLive) {
+    public Mono<Void> putETldPlusOne(String e2ld, Risk risk) {
 
         return redisTemplate.opsForValue()
-                .set("risk:e2ld:"+e2ld, risk.name(), Duration.ofSeconds(timeToLive))
+                .set("risk:e2ld:"+e2ld, risk.name(), Duration.ofSeconds(cacheTimeToLive(risk)))
                 .then();
+    }
+
+    private long cacheTimeToLive(Risk risk) {
+
+        return switch (risk) {
+            case SAFE -> Duration.ofHours(48).toSeconds();
+            case SUSPICIOUS -> Duration.ofDays(7).toSeconds();
+            case MALICIOUS -> Duration.ofDays(31).toSeconds();
+        };
     }
 }

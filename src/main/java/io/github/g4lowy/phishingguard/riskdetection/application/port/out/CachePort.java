@@ -7,9 +7,9 @@ public interface CachePort {
 
     Mono<Risk> getUrl(String urlHash);
 
-    Mono<Void> putUrl(String urlHash, Risk risk, long ttlSeconds);
+    Mono<Void> putUrl(String urlHash, Risk risk);
 
-    Mono<Risk> getETldPlusOne(String e2ld);
+    Mono<Risk> getETldPlusOne(String eTldPlusOne);
 
-    Mono<Void> putETldPlusOne(String e2ld, Risk risk, long ttlSeconds);
+    Mono<Void> putETldPlusOne(String eTldPlusOne, Risk risk);
 }
