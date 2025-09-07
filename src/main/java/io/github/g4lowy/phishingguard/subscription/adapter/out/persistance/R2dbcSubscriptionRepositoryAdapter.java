@@ -15,10 +15,12 @@ public class R2dbcSubscriptionRepositoryAdapter implements SubscriptionRepositor
 
     private final R2dbcSubscriptionRepository subscriptionRepository;
 
+    @Override
     public Mono<Boolean> isActive(String msisdn) {
         return getStatus(msisdn).map(status -> status == SubscriptionStatus.ACTIVE);
     }
 
+    @Override
     public Mono<SubscriptionStatus> getStatus(String msisdn) {
         return subscriptionRepository.findById(msisdn)
                 .map(SubscriptionEntity::getStatus)
@@ -27,7 +29,6 @@ public class R2dbcSubscriptionRepositoryAdapter implements SubscriptionRepositor
 
     @Override
     public Mono<Void> upsert(Subscription subscription) {
-
         return subscriptionRepository.upsert(subscription);
     }
 }
