@@ -43,9 +43,10 @@ Najszybszym sposobem uruchomienia aplikacji jest wykorzystanie [docker-compose](
 
 
 ## Perspektywy rozwoju
-* algorytm sprawdzający, przeciwko któremu zagrożeniu należy przeskanować uri ???
-* kody aktywacyjny/deaktywacyjny mogłyby być przechowywane w bazie, wtedy nie muszą być zahardkodowane
-* zmiana odpowiedzi /subscription w przypadku błędnego kodu na 400
-* regex do urli nie działa w pełni poprawnie - wysypuje się na polskich znakach
-* zmiana nazw serwisów na bardziej intuicyjne: RiskDetectionService i UrlEvaluateService
-* przenisienie sekretów do docker secrets/vault
+* Algorytm sprawdzający, przeciwko któremu zagrożeniu należy przeskanować uri ???
+* Kody aktywacyjny/deaktywacyjny mogłyby być przechowywane w bazie, wtedy nie muszą być zahardkodowane
+* Zmiana odpowiedzi /subscription w przypadku błędnego kodu na 400
+* Regex do urli nie działa w pełni poprawnie - wysypuje się na polskich znakach
+* Zmiana nazw serwisów na bardziej intuicyjne: RiskDetectionService i UrlEvaluateService
+* Przenisienie sekretów do docker secrets/vault
+* Aby przyspieszyć komunikację między serwisami, zamiast resta można byłoby użyć gRPC
