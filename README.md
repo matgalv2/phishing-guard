@@ -28,6 +28,7 @@ Najszybszym sposobem uruchomienia aplikacji jest wykorzystanie [docker-compose](
 
 ## Flow
 ### /subscription
+#### Założenie: smsy, które tu trafiają, dotyczą jedynie konkretnego numeru odpowiedzialnego za działanie subskrypcji - można by to było zmienić, aby numer, na który trzeba wysłać wiadomość, był parametrem, a jego wartość była w bazie danych - tak samo z kodami
 * request trafia do kontrolera
 * serwis sprawdza, czy kod w wiadomości jest poprawny
 * Tak -> zapis danych do bazy + zwrócenie informacji, Nie -> zwrócenie informacji o błednym kodzie
