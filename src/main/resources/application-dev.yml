@@ -1,0 +1,68 @@
+spring:
+  application:
+    name: phishing-guard
+  r2dbc:
+    url: r2dbc:${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+  flyway:
+    enabled: true
+    user: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    url: jdbc:${DATABASE_URL}
+    locations: classpath:db/migration
+    clean-disabled: true
+    baseline-on-migrate: true
+    out-of-order: false
+  data:
+    redis:
+      host: ${CACHE_HOST}
+      port: ${CACHE_PORT}
+
+app:
+  google:
+    webRisk:
+      url: "https://webrisk.googleapis.com"
+      timeoutMs: 750
+      endpoint:
+        evaluateUri: "/v1eap1:evaluateUri"
+      api:
+        token: ${GOOGLE_WEBRISK_TOKEN}
+  riskDetection:
+    urlRiskCheckerStrategy:
+      suspiciousTLDs: .ru,.tk,.gq,.ml,.ga
+      banksDomains: santander.pl,mbank.pl,ing.pl,pekao.com.pl,pko.pl
+      suspiciousHostsPrefixes: login-,secure-,update-,verify-,support-,account-,auth-,wallet-,banking-,reset-
+  message:
+    subscription:
+      activated: "Phishing guard service is active"
+      deactivated: "Phishing guard service is inactive"
+      wrongCode: "The provided code is unrecognized"
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      webRisk:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 20
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 5
+  retry:
+    instances:
+      webRisk:
+        maxAttempts: 3
+        waitDuration: 200ms
+        exponentialBackoffMultiplier: 2
+        retryExceptions: >
+          org.springframework.web.reactive.function.client.WebClientRequestException,
+          java.io.IOException,
+          java.util.concurrent.TimeoutException
+
+## Actuator / Prometheus
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: health,info,prometheus
