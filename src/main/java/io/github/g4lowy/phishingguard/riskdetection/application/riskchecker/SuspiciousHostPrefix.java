@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SuspiciousHostPrefix implements UrlRiskCheckerStrategy {
+class SuspiciousHostPrefix implements UrlRiskCheckerStrategy {
 
     private final List<String> hostsPrefixes;
 
-    private SuspiciousHostPrefix(@Value("${app.riskDetection.urlRiskCheckerStrategy.suspiciousHostsPrefixes}")List<String> domainImitations) {
+    private SuspiciousHostPrefix(@Value("${app.riskDetection.urlRiskCheckerStrategy.suspiciousHostsPrefixes}") List<String> hostsPrefixes) {
 
-        this.hostsPrefixes = domainImitations;
+        this.hostsPrefixes = hostsPrefixes;
     }
 
     @Override

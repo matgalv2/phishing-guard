@@ -32,12 +32,12 @@ app:
     urlRiskCheckerStrategy:
       suspiciousTLDs: .ru,.tk,.gq,.ml,.ga
       banksDomains: santander.pl,mbank.pl,ing.pl,pekao.com.pl,pko.pl
+      minLevenshteinDistance: 1
+      maxLevenshteinDistance: 2
       suspiciousHostsPrefixes: login-,secure-,update-,verify-,support-,account-,auth-,wallet-,banking-,reset-
-  message:
-    subscription:
-      activated: "Phishing guard service is active"
-      deactivated: "Phishing guard service is inactive"
-      wrongCode: "The provided code is unrecognized"
+  validation:
+    phone:
+      pattern: "\\d{9}"
 
 resilience4j:
   circuitbreaker:
@@ -59,10 +59,3 @@ resilience4j:
           org.springframework.web.reactive.function.client.WebClientRequestException,
           java.io.IOException,
           java.util.concurrent.TimeoutException
-
-## Actuator / Prometheus
-#management:
-#  endpoints:
-#    web:
-#      exposure:
-#        include: health,info,prometheus

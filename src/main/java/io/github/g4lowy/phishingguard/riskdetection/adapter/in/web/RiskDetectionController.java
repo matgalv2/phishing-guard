@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/sms")
-public class RiskDetectionController {
+class RiskDetectionController {
 
     private final EvaluateSmsRiskUseCase evaluateSmsRiskUseCase;
 

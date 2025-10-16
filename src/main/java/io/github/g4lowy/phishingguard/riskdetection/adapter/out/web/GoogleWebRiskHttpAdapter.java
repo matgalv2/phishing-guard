@@ -26,7 +26,7 @@ import java.util.Arrays;
 class GoogleWebRiskHttpAdapter implements WebRiskPort {
 
     private static final String WEB_RISK = "webRisk";
-    public static final Logger logger = LoggerFactory.getLogger(GoogleWebRiskHttpAdapter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GoogleWebRiskHttpAdapter.class);
 
     private final WebClient webClient;
     private final String evaluateUriEndpoint;
@@ -67,7 +67,7 @@ class GoogleWebRiskHttpAdapter implements WebRiskPort {
                 .map(predicate -> predicate ? Risk.MALICIOUS : Risk.SAFE)
                 .timeout(Duration.ofMillis(timeoutMs))
                 .onErrorResume(error -> {
-                    logger.error(
+                    LOGGER.error(
                             "WebRisk API error {} for uri={}, falling back\n{}",
                             error.getMessage(),
                             normalizedUrl,

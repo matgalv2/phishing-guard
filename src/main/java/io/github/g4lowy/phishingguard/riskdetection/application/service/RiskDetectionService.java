@@ -17,12 +17,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class RiskDetectionService implements EvaluateSmsRiskUseCase {
+class RiskDetectionService implements EvaluateSmsRiskUseCase {
 
     private final UrlEvaluateService urlEvaluateService;
     private final DecisionRepositoryPort decisionRepositoryPort;
     private final CheckSubscriptionUseCase checkSubscriptionUseCase;
 
+    @Override
     public Mono<DecisionResponseDto> evaluate(SmsDto smsDto) {
 
         Mono<Boolean> hasActiveSubscription = checkSubscriptionUseCase.hasActiveSubscription(smsDto.recipient());

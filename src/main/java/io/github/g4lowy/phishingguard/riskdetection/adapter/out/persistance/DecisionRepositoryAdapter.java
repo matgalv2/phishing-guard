@@ -25,7 +25,6 @@ class DecisionRepositoryAdapter implements DecisionRepositoryPort {
                 .urls(getDecisionUrlsAsArray(decision)).build();
 
         return decisionRepository.save(decisionEntity).then();
-
     }
 
     private String[] getDecisionUrlsAsArray(Decision decision) {

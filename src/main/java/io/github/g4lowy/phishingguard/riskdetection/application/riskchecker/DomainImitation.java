@@ -12,12 +12,17 @@ import java.util.List;
 @Service
 class DomainImitation implements UrlRiskCheckerStrategy {
 
+    private final List<String> banksDomains;
+    private final int minLevenshteinDistance;
+    private final int maxLevenshteinDistance;
 
-    private final List<String> domainImitations;
+    private DomainImitation(@Value("${app.riskDetection.urlRiskCheckerStrategy.banksDomains}") List<String> banksDomains,
+                            @Value("${app.riskDetection.urlRiskCheckerStrategy.minLevenshteinDistance}") int minLevenshteinDistance,
+                            @Value("${app.riskDetection.urlRiskCheckerStrategy.maxLevenshteinDistance}") int maxLevenshteinDistance) {
 
-    private DomainImitation(@Value("${app.riskDetection.urlRiskCheckerStrategy.banksDomains}") List<String> domainImitations) {
-
-        this.domainImitations = domainImitations;
+        this.banksDomains = banksDomains;
+        this.minLevenshteinDistance = minLevenshteinDistance;
+        this.maxLevenshteinDistance = maxLevenshteinDistance;
     }
 
     @Override
@@ -27,9 +32,9 @@ class DomainImitation implements UrlRiskCheckerStrategy {
         String host = UrlUtils.hostOf(normalizedUrl);
         String eTldPlusOne = UrlUtils.eTldPlusOne(host);
 
-        return domainImitations.stream()
+        return banksDomains.stream()
                 .map(bank -> calculateLevenshteinDistance(eTldPlusOne, bank))
-                .anyMatch(distance -> distance >= 1 && distance <= 2);
+                .anyMatch(distance -> distance >= minLevenshteinDistance && distance <= maxLevenshteinDistance);
     }
 
     private int calculateLevenshteinDistance(String left, String right) {

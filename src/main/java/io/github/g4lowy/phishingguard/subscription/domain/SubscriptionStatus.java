@@ -7,10 +7,11 @@ import java.util.Optional;
 
 @Getter
 public enum SubscriptionStatus {
+
     ACTIVE("START"),
     INACTIVE("STOP");
 
-    //TODO: key words should not be hardcoded
+    //TODO: keywords should not be hardcoded
 
     private final String keyword;
 

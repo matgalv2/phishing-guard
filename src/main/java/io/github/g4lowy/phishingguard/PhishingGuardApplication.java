@@ -10,5 +10,4 @@ public class PhishingGuardApplication {
         SpringApplication.run(PhishingGuardApplication.class, args);
     }
 
-    //todo: dodać komunikację między modułami + testy
 }
